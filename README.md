@@ -37,7 +37,7 @@ Parameters:
 - `code` — source code (e.g. `38341003`)
 - `targetsystem` — target vocabulary URI (e.g. `http://ohdsi.org/omop`)
 
-Returns a standard FHIR `Parameters` resource:
+**Match found** — HTTP 200:
 ```json
 {
   "resourceType": "Parameters",
@@ -53,6 +53,21 @@ Returns a standard FHIR `Parameters` resource:
   ]
 }
 ```
+
+**No match found** — HTTP 200 (per FHIR spec; `$translate` is an operation returning a
+result, not a resource lookup, so 404 does not apply):
+```json
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    { "name": "result", "valueBoolean": false },
+    { "name": "message", "valueString": "No mapping found for SNOMED#38341003" }
+  ]
+}
+```
+
+The `message` parameter is defined in the FHIR spec as optional on both match and no-match;
+here it is always populated on no-match to aid debugging.
 
 ## Data source
 
@@ -74,9 +89,27 @@ SNOMED, ICD10CM, ICD9CM, RxNorm, LOINC at minimum.
 
 ## Technology
 
-- **DuckDB** — query CSVs directly without ETL; handles 7M+ rows efficiently
 - **Python + FastAPI** — minimal REST layer; one route handler per operation
-- **Reference**: `/Users/croeder/git/omop_on_duckdb/` — existing DuckDB + OMOP CSV loading
+- **SQLite** — point-lookup database loaded from CONCEPT.csv at startup; indexed on
+  `(concept_code, vocabulary_id)`. SQLite is purpose-built for OLTP point lookups and
+  a better fit than DuckDB (which is optimized for analytical scans, not single-row
+  lookups over 7M rows). The CSV is loaded into a SQLite file once on first run;
+  subsequent server starts reuse the existing file.
+- **Reference**: `/Users/croeder/git/omop_on_duckdb/` — existing OMOP CSV loading patterns
+
+## Configuration
+
+`config.yaml`:
+```yaml
+server:
+  host: 0.0.0.0
+  port: 8081
+
+data:
+  concept_csv: /Users/croeder/git/CCDA/tislab-clad/CCDA_OMOP_Private/CONCEPT.csv
+  concept_relationship_csv: null   # set path when available
+  sqlite_db: ./enchilada.db        # created on first run, reused thereafter
+```
 
 ## Translation logic
 
@@ -92,11 +125,22 @@ For `ConceptMap/$translate` given `(system, code, targetsystem)`:
 | `http://www.nlm.nih.gov/research/umls/rxnorm` | `RxNorm` |
 | `http://loinc.org` | `LOINC` |
 
-2. Query `CONCEPT` for `concept_code = code` AND `vocabulary_id = <mapped>` AND
+2. Query SQLite `CONCEPT` for `concept_code = code` AND `vocabulary_id = <mapped>` AND
    `standard_concept = 'S'` → return `concept_id` directly.
 
 3. If not found as a standard concept, join through `CONCEPT_RELATIONSHIP` on
-   `relationship_id = 'Maps to'` to find the standard concept (requires the Athena download).
+   `relationship_id = 'Maps to'` to find the standard concept (requires Athena download).
+
+4. If still not found, return `result=false` with a descriptive `message`.
+
+## Test cases
+
+Two known-good codes confirmed against the local CONCEPT.csv:
+
+| Input system | code | Expected concept_id |
+|---|---|---|
+| `http://snomed.info/sct` | `38341003` (hypertensive disorder) | `316866` |
+| `http://snomed.info/sct` | `386661006` (fever) | `437663` |
 
 ## Matchbox integration
 
