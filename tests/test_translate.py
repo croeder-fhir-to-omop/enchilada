@@ -133,3 +133,21 @@ def test_http_get_match(client):
 def test_http_missing_param(client):
     resp = client.post("/r4/ConceptMap/$translate", json={"resourceType": "Parameters", "parameter": []})
     assert resp.status_code == 400
+
+
+def test_metadata_capability_statement(client):
+    resp = client.get("/r4/metadata")
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["resourceType"] == "CapabilityStatement"
+    assert body["fhirVersion"] == "4.0.1"
+
+
+def test_metadata_terminology_capabilities(client):
+    resp = client.get("/r4/metadata", params={"mode": "terminology"})
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["resourceType"] == "TerminologyCapabilities"
+    uris = {cs["uri"] for cs in body["codeSystem"]}
+    assert "http://snomed.info/sct" in uris
+    assert "http://loinc.org" in uris
