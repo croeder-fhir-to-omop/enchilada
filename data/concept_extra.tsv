@@ -1,80 +1,54 @@
 concept_id	concept_code	vocabulary_id	standard_concept
-4026477	227493005	SNOMED	S
-1728416	323389000	SNOMED	S
-1728416	7980	RxNorm	S
-2033387433	food	AllergyIntoleranceCategory	
-2078243916	medication	AllergyIntoleranceCategory	
-2039066670	environment	AllergyIntoleranceCategory	
-2797776628	biologic	AllergyIntoleranceCategory	
-36203185	85354-9	LOINC	S
-3004249	8480-6	LOINC	S
-3012888	8462-4	LOINC	S
-3027598	8478-0	LOINC	S
-586323	258710007	SNOMED	S
-437663	386661006	SNOMED	S
-4264681	36225005	SNOMED	S
-443392	363346000	SNOMED	S
-432545	87628006	SNOMED	S
-4281749	368009	SNOMED	S
-4115276	254637007	SNOMED	S
-437580	18099001	SNOMED	S
-4310996	422504002	SNOMED	S
-4195970	312824007	SNOMED	S
-2072282478	active	ConditionClinical	
-2987938829	inactive	ConditionClinical	
-2956604807	resolved	ConditionClinical	
-2686409417	hosp-trans	AdmitSource	
-2524045274	emd	AdmitSource	
-2180608579	outp	AdmitSource	
-2651751801	born	AdmitSource	
-2099672379	gp	AdmitSource	
-2190409546	mp	AdmitSource	
-2039452137	nursing	AdmitSource	
-2602428510	psych	AdmitSource	
-2602817741	rehab	AdmitSource	
-2490663356	IMP	v3-ActCode	
-2575504472	AMB	v3-ActCode	
-2467559011	OBSENC	v3-ActCode	
-2276730284	EMER	v3-ActCode	
-2112044558	VR	v3-ActCode	
-2262555370	HH	v3-ActCode	
-2200756002	home	DischargeDisposition	
-2737418651	alt-home	DischargeDisposition	
-2819010387	other-hcf	DischargeDisposition	
-2919523460	hosp	DischargeDisposition	
-2797825352	long	DischargeDisposition	
-2274607056	aadvice	DischargeDisposition	
-2833434036	exp	DischargeDisposition	
-2905734828	psy	DischargeDisposition	
-2971310033	rehab	DischargeDisposition	
-2670410081	snf	DischargeDisposition	
-2409062701	male	AdministrativeGender	
-2925661279	female	AdministrativeGender	
-2353175280	other	AdministrativeGender	
-2501867320	unknown	AdministrativeGender	
-2605944880	IDINJ	RouteOfAdministration	
-2450783829	IM	RouteOfAdministration	
-2769455523	IVINJ	RouteOfAdministration	
-2529742204	PO	RouteOfAdministration	
-2888008226	SQ	RouteOfAdministration	
-2344051687	TRNSDERM	RouteOfAdministration	
-2277544321	recall	ImmunizationOrigin	
-2201769126	record	ImmunizationOrigin	
-2517259619	school	ImmunizationOrigin	
-2428807643	provider	ImmunizationOrigin	
-2191227612	140	CVX	
-2977874968	141	CVX	
-2797407239	171	CVX	
-2841924086	food	IntoleranceCategory	
-2558327156	medication	IntoleranceCategory	
-2570733571	environment	IntoleranceCategory	
-2915829880	biologic	IntoleranceCategory	
-36203184	85353-1	LOINC	S
-3024171	9279-1	LOINC	S
-3027018	8867-4	LOINC	S
-3016502	2708-6	LOINC	S
-3020891	8310-5	LOINC	S
-3036277	8302-2	LOINC	S
-3000053	9843-4	LOINC	S
-3025315	29463-7	LOINC	S
-3038553	39156-5	LOINC	S
+2033387433	food	AllergyIntoleranceCategory
+2078243916	medication	AllergyIntoleranceCategory
+2039066670	environment	AllergyIntoleranceCategory
+2797776628	biologic	AllergyIntoleranceCategory
+2072282478	active	ConditionClinical
+2987938829	inactive	ConditionClinical
+2956604807	resolved	ConditionClinical
+2686409417	hosp-trans	AdmitSource
+2524045274	emd	AdmitSource
+2180608579	outp	AdmitSource
+2651751801	born	AdmitSource
+2099672379	gp	AdmitSource
+2190409546	mp	AdmitSource
+2039452137	nursing	AdmitSource
+2602428510	psych	AdmitSource
+2602817741	rehab	AdmitSource
+2490663356	IMP	v3-ActCode
+2575504472	AMB	v3-ActCode
+2467559011	OBSENC	v3-ActCode
+2276730284	EMER	v3-ActCode
+2112044558	VR	v3-ActCode
+2262555370	HH	v3-ActCode
+2200756002	home	DischargeDisposition
+2737418651	alt-home	DischargeDisposition
+2819010387	other-hcf	DischargeDisposition
+2919523460	hosp	DischargeDisposition
+2797825352	long	DischargeDisposition
+2274607056	aadvice	DischargeDisposition
+2833434036	exp	DischargeDisposition
+2905734828	psy	DischargeDisposition
+2971310033	rehab	DischargeDisposition
+2670410081	snf	DischargeDisposition
+2409062701	male	AdministrativeGender
+2925661279	female	AdministrativeGender
+2353175280	other	AdministrativeGender
+2501867320	unknown	AdministrativeGender
+2605944880	IDINJ	RouteOfAdministration
+2450783829	IM	RouteOfAdministration
+2769455523	IVINJ	RouteOfAdministration
+2529742204	PO	RouteOfAdministration
+2888008226	SQ	RouteOfAdministration
+2344051687	TRNSDERM	RouteOfAdministration
+2277544321	recall	ImmunizationOrigin
+2201769126	record	ImmunizationOrigin
+2517259619	school	ImmunizationOrigin
+2428807643	provider	ImmunizationOrigin
+2191227612	140	CVX
+2977874968	141	CVX
+2797407239	171	CVX
+2841924086	food	IntoleranceCategory
+2558327156	medication	IntoleranceCategory
+2570733571	environment	IntoleranceCategory
+2915829880	biologic	IntoleranceCategory
