@@ -46,10 +46,13 @@ def conn():
         INSERT INTO concept_relationship VALUES (999001, 316866, 'Maps to');
 
         -- ICD-10-CM: no standard concepts in OMOP, always needs Maps to
-        INSERT INTO concept VALUES (201820, 'E11.9', 'ICD10CM', NULL);
-        INSERT INTO concept VALUES (888001, 'E11',   'ICD10CM', NULL);
-        INSERT INTO concept_relationship VALUES (201820, 316866, 'Maps to');
-        INSERT INTO concept_relationship VALUES (888001, 316866, 'Maps to');
+        -- concept_ids and target SNOMED ids match real OMOP/Athena data
+        INSERT INTO concept VALUES (35206882, 'E11.9', 'ICD10CM', NULL);
+        INSERT INTO concept VALUES (35207163, 'E11',   'ICD10CM', NULL);
+        INSERT INTO concept VALUES (4193704,  '313436004', 'SNOMED', 'S');
+        INSERT INTO concept VALUES (201826,   '44054006',  'SNOMED', 'S');
+        INSERT INTO concept_relationship VALUES (35206882, 4193704, 'Maps to');
+        INSERT INTO concept_relationship VALUES (35207163, 201826,  'Maps to');
     """)
     yield c
     c.close()
@@ -375,16 +378,17 @@ def test_WHEN_r5_bare_code_with_known_url_as_system_SHOULD_translate(client):
 # ---------------------------------------------------------------------------
 
 def test_WHEN_icd10cm_E11_9_SHOULD_translate_via_maps_to(conn):
-    """ICD-10-CM codes are never standard in OMOP; E11.9 resolves via Maps-to → 316866."""
+    """ICD-10-CM codes are never standard in OMOP; E11.9 → SNOMED 313436004 (concept 4193704)."""
     result = translate_r4(conn, ICD10CM, "E11.9", OMOP)
     assert result["parameter"][0]["valueBoolean"] is True
-    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "316866"
+    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "4193704"
 
 
 def test_WHEN_icd10cm_E11_SHOULD_translate_via_maps_to(conn):
+    """E11 → SNOMED 44054006 (concept 201826, Diabetes mellitus type 2)."""
     result = translate_r4(conn, ICD10CM, "E11", OMOP)
     assert result["parameter"][0]["valueBoolean"] is True
-    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "316866"
+    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "201826"
 
 
 def test_WHEN_icd10cm_unknown_code_SHOULD_return_false(conn):
@@ -409,7 +413,7 @@ def test_WHEN_icd10cm_r4_http_post_SHOULD_translate(client):
     assert data["parameter"][0]["valueBoolean"] is True
     parts = {p["name"]: p for p in data["parameter"][1]["part"]}
     assert parts["equivalence"]["valueCode"] == "equivalent"
-    assert parts["concept"]["valueCoding"]["code"] == "316866"
+    assert parts["concept"]["valueCoding"]["code"] == "4193704"
 
 
 def test_WHEN_icd10cm_r5_sourceCoding_SHOULD_translate(client):
@@ -429,4 +433,4 @@ def test_WHEN_icd10cm_r5_sourceCoding_SHOULD_translate(client):
     parts = {p["name"]: p for p in data["parameter"][1]["part"]}
     assert "relationship" in parts
     assert "equivalence" not in parts
-    assert parts["concept"]["valueCoding"]["code"] == "316866"
+    assert parts["concept"]["valueCoding"]["code"] == "4193704"

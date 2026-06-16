@@ -123,6 +123,17 @@ def test_WHEN_icd10cm_E11_9_SHOULD_map_to_snomed_standard_concept(real_conn):
 
 
 @skip_if_no_cr
+def test_WHEN_icd10cm_E11_SHOULD_map_to_snomed_standard_concept(real_conn):
+    """ICD-10-CM E11 (T2DM) → OMOP 201826 via Maps-to.
+
+    201826 = SNOMED 44054006 'Diabetes mellitus type 2'.
+    """
+    result = translate_r4(real_conn, ICD10CM, "E11", OMOP)
+    assert result["parameter"][0]["valueBoolean"] is True
+    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "201826"
+
+
+@skip_if_no_cr
 def test_WHEN_icd10cm_unknown_code_SHOULD_return_false(real_conn):
     result = translate_r4(real_conn, ICD10CM, "Z99.999", OMOP)
     assert result["parameter"][0]["valueBoolean"] is False
