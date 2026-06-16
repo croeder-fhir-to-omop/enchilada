@@ -3,7 +3,7 @@ server:
   port: 8081
 
 data:
-  concept_csv: /Users/croeder/git/CCDA/tislab-clad/CCDA_OMOP_Private/CONCEPT.csv
+  concept_csv: /Users/croeder/git_projects/fhir-to-omop-docker/data/CONCEPT.csv
   concept_relationship_csv: /Users/croeder/git_projects/fhir-to-omop-docker/data/CONCEPT_RELATIONSHIP.csv
   concept_extra_csv: /Users/croeder/git/matchbox_scripts/concept_extra.tsv
   concept_relationship_extra_csv: /Users/croeder/git/matchbox_scripts/concept_relationship_extra.tsv
