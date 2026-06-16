@@ -38,12 +38,18 @@ def conn():
         CREATE INDEX idx_cr ON concept_relationship (concept_id_1, relationship_id);
 
         -- standard concepts (step 1 path)
-        INSERT INTO concept VALUES (316866, '38341003',  'SNOMED', 'S');
-        INSERT INTO concept VALUES (437663, '386661006', 'SNOMED', 'S');
+        INSERT INTO concept VALUES (316866, '38341003',  'SNOMED',  'S');
+        INSERT INTO concept VALUES (437663, '386661006', 'SNOMED',  'S');
 
         -- non-standard concept + Maps to relationship (step 2 path)
-        INSERT INTO concept VALUES (999001, 'NONSTANDARD_CODE', 'SNOMED', NULL);
+        INSERT INTO concept VALUES (999001, 'NONSTANDARD_CODE', 'SNOMED',  NULL);
         INSERT INTO concept_relationship VALUES (999001, 316866, 'Maps to');
+
+        -- ICD-10-CM: no standard concepts in OMOP, always needs Maps to
+        INSERT INTO concept VALUES (201820, 'E11.9', 'ICD10CM', NULL);
+        INSERT INTO concept VALUES (888001, 'E11',   'ICD10CM', NULL);
+        INSERT INTO concept_relationship VALUES (201820, 316866, 'Maps to');
+        INSERT INTO concept_relationship VALUES (888001, 316866, 'Maps to');
     """)
     yield c
     c.close()
@@ -66,8 +72,9 @@ def client(conn):
 # Unit tests — translate() directly
 # ---------------------------------------------------------------------------
 
-SNOMED = "http://snomed.info/sct"
-OMOP   = "http://ohdsi.org/omop"
+SNOMED  = "http://snomed.info/sct"
+ICD10CM = "http://hl7.org/fhir/sid/icd-10-cm"
+OMOP    = "http://ohdsi.org/omop"
 
 
 def test_standard_concept_hypertension(conn):
@@ -361,3 +368,65 @@ def test_WHEN_r5_bare_code_with_known_url_as_system_SHOULD_translate(client):
     assert resp.status_code == 200
     assert resp.json()["parameter"][0]["valueBoolean"] is True
     assert resp.json()["parameter"][1]["part"][1]["valueCoding"]["code"] == "316866"
+
+
+# ---------------------------------------------------------------------------
+# ICD-10-CM tests
+# ---------------------------------------------------------------------------
+
+def test_WHEN_icd10cm_E11_9_SHOULD_translate_via_maps_to(conn):
+    """ICD-10-CM codes are never standard in OMOP; E11.9 resolves via Maps-to → 316866."""
+    result = translate_r4(conn, ICD10CM, "E11.9", OMOP)
+    assert result["parameter"][0]["valueBoolean"] is True
+    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "316866"
+
+
+def test_WHEN_icd10cm_E11_SHOULD_translate_via_maps_to(conn):
+    result = translate_r4(conn, ICD10CM, "E11", OMOP)
+    assert result["parameter"][0]["valueBoolean"] is True
+    assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "316866"
+
+
+def test_WHEN_icd10cm_unknown_code_SHOULD_return_false(conn):
+    result = translate_r4(conn, ICD10CM, "Z99.999", OMOP)
+    assert result["parameter"][0]["valueBoolean"] is False
+
+
+def test_WHEN_icd10cm_r4_http_post_SHOULD_translate(client):
+    resp = client.post(
+        "/r4/ConceptMap/$translate",
+        json={
+            "resourceType": "Parameters",
+            "parameter": [
+                {"name": "system",       "valueUri":  ICD10CM},
+                {"name": "code",         "valueCode": "E11.9"},
+                {"name": "targetsystem", "valueUri":  OMOP},
+            ],
+        },
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["parameter"][0]["valueBoolean"] is True
+    parts = {p["name"]: p for p in data["parameter"][1]["part"]}
+    assert parts["equivalence"]["valueCode"] == "equivalent"
+    assert parts["concept"]["valueCoding"]["code"] == "316866"
+
+
+def test_WHEN_icd10cm_r5_sourceCoding_SHOULD_translate(client):
+    resp = client.post(
+        "/r5/ConceptMap/$translate",
+        json={
+            "resourceType": "Parameters",
+            "parameter": [
+                {"name": "sourceCoding", "valueCoding": {"system": ICD10CM, "code": "E11.9"}},
+                {"name": "targetSystem", "valueUri":    OMOP},
+            ],
+        },
+    )
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["parameter"][0]["valueBoolean"] is True
+    parts = {p["name"]: p for p in data["parameter"][1]["part"]}
+    assert "relationship" in parts
+    assert "equivalence" not in parts
+    assert parts["concept"]["valueCoding"]["code"] == "316866"

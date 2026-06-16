@@ -200,7 +200,7 @@ class TestLoadConceptRelationshipExtra:
         self, tmp_path
     ):
         """Full integration: local concept + Maps to relationship resolves to standard concept."""
-        from enchilada.translate import translate
+        from enchilada.translate import translate_r4
         conn = _make_conn()
 
         # Standard concept (the target)
@@ -222,7 +222,7 @@ class TestLoadConceptRelationshipExtra:
         ])
         _load_concept_relationship_extra(conn, str(cr_csv))
 
-        result = translate(conn, "http://hl7.org/fhir/administrative-gender", "male",
-                           "https://athena.ohdsi.org")
+        result = translate_r4(conn, "http://hl7.org/fhir/administrative-gender", "male",
+                              "https://athena.ohdsi.org")
         assert result["parameter"][0]["valueBoolean"] is True
         assert result["parameter"][1]["part"][1]["valueCoding"]["code"] == "8507"
