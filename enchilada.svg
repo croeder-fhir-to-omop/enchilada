@@ -1,0 +1,50 @@
+<svg width="680" height="262" viewBox="0 0 680 262" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Enchilada terminology server logo</title>
+<desc>A folded tortilla enchilada smothered in red sauce with melted cheese and cilantro, plated, above the wordmark "Enchilada — terminology server".</desc>
+<defs>
+<linearGradient id="sauce" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CB4233"/><stop offset="100%" stop-color="#97291F"/></linearGradient>
+<linearGradient id="cheese" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F8D24F"/><stop offset="100%" stop-color="#E0A52A"/></linearGradient>
+<style>
+.wordmark { fill: #1a1a18; }
+.subtitle { fill: #73726c; }
+@media (prefers-color-scheme: dark) {
+.wordmark { fill: #f5f4ee; }
+.subtitle { fill: #9c9a92; }
+}
+</style>
+</defs>
+
+<g transform="translate(0,-46)">
+<ellipse cx="342" cy="194" rx="116" ry="20" fill="#000000" opacity="0.10"/>
+<ellipse cx="340" cy="180" rx="126" ry="33" fill="#E8DEC9" stroke="#D6C9AE" stroke-width="1"/>
+<ellipse cx="340" cy="178" rx="103" ry="25" fill="#F3ECDC"/>
+
+<path d="M256,176 C262,166 280,162 312,162 C350,162 392,164 420,172 C430,176 426,184 410,188 C380,194 300,194 268,188 C256,184 252,180 256,176 Z" fill="#B23528" opacity="0.85"/>
+
+<path d="M262,170 C256,150 268,128 298,118 C320,111 358,110 382,120 C410,131 426,150 420,168 C414,180 392,184 360,184 C320,184 282,182 268,176 C264,174 262,172 262,170 Z" fill="url(#sauce)"/>
+
+<path d="M276,140 C300,126 350,124 398,138 C396,146 388,150 378,150 C350,154 304,154 286,150 C280,148 276,145 276,140 Z" fill="#8E2A20" opacity="0.45"/>
+<path d="M276,138 C298,120 350,118 398,134 C376,140 320,140 296,140 C288,140 280,140 276,138 Z" fill="#D9543F" opacity="0.7"/>
+
+<path d="M286,176 C312,182 372,182 396,176 C396,180 388,183 378,183 C350,186 312,186 300,183 C292,182 286,179 286,176 Z" fill="#E2AB6C"/>
+<path d="M300,179 C330,182 366,182 386,179" stroke="#B07B3E" stroke-width="1" fill="none" opacity="0.6"/>
+
+<ellipse cx="300" cy="150" rx="14" ry="5" fill="#F0816E" opacity="0.35"/>
+<ellipse cx="392" cy="156" rx="10" ry="4" fill="#F0816E" opacity="0.3"/>
+
+<path d="M306,124 C326,116 358,116 378,126 C384,134 379,142 369,145 C374,151 368,158 359,155 C357,162 348,160 346,153 C340,160 330,157 331,150 C322,153 314,148 317,140 C308,138 302,132 306,124 Z" fill="url(#cheese)"/>
+<path d="M334,145 C336,152 334,160 338,168" stroke="#E7B23A" stroke-width="1.5" fill="none" opacity="0.8"/>
+<path d="M360,146 C362,153 360,160 356,166" stroke="#E7B23A" stroke-width="1.5" fill="none" opacity="0.7"/>
+
+<path d="M322,120 C319,114 327,112 328,118 C331,124 324,126 322,120 Z" fill="#5C8C3A"/>
+<path d="M348,116 C345,110 353,108 354,114 C357,120 350,122 348,116 Z" fill="#4E7D34"/>
+<path d="M334,132 C331,126 339,124 340,130 C343,136 336,138 334,132 Z" fill="#6AA84F"/>
+<ellipse cx="312" cy="138" rx="3.5" ry="2.5" fill="#F7F4EC"/>
+<ellipse cx="372" cy="134" rx="3" ry="2.2" fill="#F7F4EC"/>
+<ellipse cx="356" cy="128" rx="2.8" ry="2" fill="#F4EFE4"/>
+<ellipse cx="330" cy="151" rx="2.6" ry="2" fill="#F7F4EC"/>
+</g>
+
+<text class="wordmark" x="340" y="212" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="36" font-weight="500">Enchilada</text>
+<text class="subtitle" x="340" y="242" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15">terminology server</text>
+</svg>
